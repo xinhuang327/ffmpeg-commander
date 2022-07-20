@@ -67,7 +67,7 @@
 </template>
 
 <script>
-import path from 'path';
+// import path from 'path';
 import merge from 'lodash.merge';
 import clone from 'lodash.clonedeep';
 import form from '@/form';
@@ -210,8 +210,7 @@ export default {
           this.form = merge(this.form, preset.data);
           this.preset.name = preset.name;
         } else if (
-          this.preset.id !== 'custom' &&
-          !this.preset.id.startsWith('preset-')
+          this.preset.id !== 'custom' && !this.preset.id.startsWith('preset-')
         ) {
           this.setPreset(this.preset.id);
           this.preset.name = null;
@@ -262,7 +261,7 @@ export default {
       const presetName = presets.savePresetToLocalStorage(
         this.preset.id,
         this.preset.name,
-        this.form
+        this.form,
       );
       this.presets = presets.getPresetOptions();
       this.preset.id = presetName;
