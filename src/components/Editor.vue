@@ -232,13 +232,13 @@ export default {
       this.cmd = ffmpeg.build(opt);
     },
     updateOutput() {
-      if (this.form.io.output) {
-        const { format, io } = this.form;
-        const ext = path.extname(io.output);
-        if (ext) {
+      // if (this.form.io.output) {
+        // const { format, io } = this.form;
+        // const ext = path.extname(io.output);
+        // if (ext) {
           // this.form.io.output = `${io.output.replace(ext, `.${format.container}`)}`;
-        }
-      }
+        // }
+      // }
     },
     setDataFromQueryParams() {
       const { query } = this.$route;
