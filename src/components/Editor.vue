@@ -1,6 +1,5 @@
 <template>
   <div class="editor">
-
     <!-- User can load pre-defined presets and can also access their
     custom saved presets here. -->
     <Presets v-model="preset" />
@@ -36,8 +35,9 @@
     <!-- FFmpeg generated command output with tooltips. -->
     <Command :cmd="cmd" />
     <p class="disclaimer">
-      *Generated options may vary based on your FFmpeg version and build configuration.
-      Tested on version 4.3.1.</p>
+      *Generated options may vary based on your FFmpeg version and build
+      configuration. Tested on version 4.3.1.
+    </p>
 
     <!-- Hidden textarea so we can use the browser copy function. -->
     <div class="hidden-cmd">
@@ -87,11 +87,7 @@ import Command from './Command.vue';
 import Toolbar from './Toolbar.vue';
 import JsonViewer from './JsonViewer.vue';
 
-const {
-  protocols,
-  containers,
-  codecs,
-} = form;
+const { protocols, containers, codecs } = form;
 
 export default {
   name: 'Editor',
@@ -213,7 +209,10 @@ export default {
           const preset = presets.getPresetFromLocalStorage(this.preset.id);
           this.form = merge(this.form, preset.data);
           this.preset.name = preset.name;
-        } else if (this.preset.id !== 'custom' && !this.preset.id.startsWith('preset-')) {
+        } else if (
+          this.preset.id !== 'custom' &&
+          !this.preset.id.startsWith('preset-')
+        ) {
           this.setPreset(this.preset.id);
           this.preset.name = null;
         }
@@ -233,11 +232,11 @@ export default {
     },
     updateOutput() {
       // if (this.form.io.output) {
-        // const { format, io } = this.form;
-        // const ext = path.extname(io.output);
-        // if (ext) {
-          // this.form.io.output = `${io.output.replace(ext, `.${format.container}`)}`;
-        // }
+      // const { format, io } = this.form;
+      // const ext = path.extname(io.output);
+      // if (ext) {
+      // this.form.io.output = `${io.output.replace(ext, `.${format.container}`)}`;
+      // }
       // }
     },
     setDataFromQueryParams() {
@@ -261,7 +260,9 @@ export default {
 
       // Save the preset name and reload the presets list.
       const presetName = presets.savePresetToLocalStorage(
-        this.preset.id, this.preset.name, this.form,
+        this.preset.id,
+        this.preset.name,
+        this.form
       );
       this.presets = presets.getPresetOptions();
       this.preset.id = presetName;
