@@ -1,6 +1,5 @@
 <template>
   <div class="editor">
-
     <!-- User can load pre-defined presets and can also access their
     custom saved presets here. -->
     <Presets v-model="preset" />
@@ -36,8 +35,9 @@
     <!-- FFmpeg generated command output with tooltips. -->
     <Command :cmd="cmd" />
     <p class="disclaimer">
-      *Generated options may vary based on your FFmpeg version and build configuration.
-      Tested on version 4.3.1.</p>
+      *Generated options may vary based on your FFmpeg version and build
+      configuration. Tested on version 4.3.1.
+    </p>
 
     <!-- Hidden textarea so we can use the browser copy function. -->
     <div class="hidden-cmd">
@@ -67,34 +67,30 @@
 </template>
 
 <script>
-import path from 'path';
-import merge from 'lodash.merge';
-import clone from 'lodash.clonedeep';
-import form from '@/form';
-import presets from '@/presets';
-import ffmpeg from '@/ffmpeg';
-import util from '@/util';
-import storage from '@/storage';
+import path from "path";
+import merge from "lodash.merge";
+import clone from "lodash.clonedeep";
+import form from "@/form";
+import presets from "@/presets";
+import ffmpeg from "@/ffmpeg";
+import util from "@/util";
+import storage from "@/storage";
 
-import Presets from './Presets.vue';
-import FileIO from './FileIO.vue';
-import Format from './Format.vue';
-import Video from './Video.vue';
-import Audio from './Audio.vue';
-import Filters from './Filters.vue';
-import Options from './Options.vue';
-import Command from './Command.vue';
-import Toolbar from './Toolbar.vue';
-import JsonViewer from './JsonViewer.vue';
+import Presets from "./Presets.vue";
+import FileIO from "./FileIO.vue";
+import Format from "./Format.vue";
+import Video from "./Video.vue";
+import Audio from "./Audio.vue";
+import Filters from "./Filters.vue";
+import Options from "./Options.vue";
+import Command from "./Command.vue";
+import Toolbar from "./Toolbar.vue";
+import JsonViewer from "./JsonViewer.vue";
 
-const {
-  protocols,
-  containers,
-  codecs,
-} = form;
+const { protocols, containers, codecs } = form;
 
 export default {
-  name: 'Editor',
+  name: "Editor",
   components: {
     Presets,
     FileIO,
@@ -112,50 +108,50 @@ export default {
     return {
       default: {},
       preset: {
-        id: 'custom',
+        id: "custom",
         name: null,
       },
       form: {
         io: {
-          input: 'input.mp4',
-          output: 'output.mp4',
+          input: "input.mp4",
+          output: "output.mp4",
         },
         format: {
-          container: 'mp4',
+          container: "mp4",
           clip: false,
           startTime: null,
           stopTime: null,
         },
         video: {
-          codec: 'x264',
-          preset: 'none',
-          pass: '1',
+          codec: "x264",
+          preset: "none",
+          pass: "1",
           crf: 23,
           bitrate: null,
           minrate: null,
           maxrate: null,
           bufsize: null,
           gopsize: null,
-          pixel_format: 'auto',
-          frame_rate: 'auto',
-          speed: 'auto',
-          tune: 'none',
-          profile: 'none',
-          level: 'none',
+          pixel_format: "auto",
+          frame_rate: "auto",
+          speed: "auto",
+          tune: "none",
+          profile: "none",
+          level: "none",
           faststart: false,
-          size: 'source',
-          width: '1080',
-          height: '1920',
-          format: 'widescreen',
-          aspect: 'auto',
-          scaling: 'auto',
-          codec_options: '',
+          size: "source",
+          width: "1080",
+          height: "1920",
+          format: "widescreen",
+          aspect: "auto",
+          scaling: "auto",
+          codec_options: "",
         },
         audio: {
-          codec: 'copy',
-          channel: 'source',
-          quality: 'auto',
-          sampleRate: 'auto',
+          codec: "copy",
+          channel: "source",
+          quality: "auto",
+          sampleRate: "auto",
           volume: 100,
         },
         filters: {
@@ -163,8 +159,8 @@ export default {
           deshake: false,
           deflicker: false,
           dejudder: false,
-          denoise: 'none',
-          deinterlace: 'none',
+          denoise: "none",
+          deinterlace: "none",
           brightness: 0,
           contrast: 0,
           saturation: 0,
@@ -174,7 +170,7 @@ export default {
         },
         options: {
           extra: [],
-          loglevel: 'none',
+          loglevel: "none",
         },
       },
       protocols,
@@ -209,11 +205,14 @@ export default {
     },
     preset: {
       handler() {
-        if (this.preset.id.startsWith('preset-')) {
+        if (this.preset.id.startsWith("preset-")) {
           const preset = presets.getPresetFromLocalStorage(this.preset.id);
           this.form = merge(this.form, preset.data);
           this.preset.name = preset.name;
-        } else if (this.preset.id !== 'custom' && !this.preset.id.startsWith('preset-')) {
+        } else if (
+          this.preset.id !== "custom" &&
+          !this.preset.id.startsWith("preset-")
+        ) {
           this.setPreset(this.preset.id);
           this.preset.name = null;
         }
@@ -236,7 +235,7 @@ export default {
         const { format, io } = this.form;
         const ext = path.extname(io.output);
         if (ext) {
-          this.form.io.output = `${io.output.replace(ext, `.${format.container}`)}`;
+          //   this.form.io.output = `${io.output.replace(ext, `.${format.container}`)}`;
         }
       }
     },
@@ -251,7 +250,7 @@ export default {
     reset() {
       // Restore form from default copy.
       this.form = merge(this.form, this.default);
-      this.preset.id = 'custom';
+      this.preset.id = "custom";
       this.preset.name = null;
     },
     save(saveNew = false) {
@@ -261,7 +260,9 @@ export default {
 
       // Save the preset name and reload the presets list.
       const presetName = presets.savePresetToLocalStorage(
-        this.preset.id, this.preset.name, this.form,
+        this.preset.id,
+        this.preset.name,
+        this.form
       );
       this.presets = presets.getPresetOptions();
       this.preset.id = presetName;
@@ -270,16 +271,16 @@ export default {
     encode() {
       const { input, output } = this.form.io;
       const json = util.transformToJSON(this.form);
-      storage.add('queue', {
+      storage.add("queue", {
         id: Date.now(),
-        type: 'encode',
+        type: "encode",
         payload: json,
-        status: 'queued',
+        status: "queued",
         input,
         output,
         _showDetails: false,
       });
-      this.$emit('onEncode');
+      this.$emit("onEncode");
     },
   },
 };
