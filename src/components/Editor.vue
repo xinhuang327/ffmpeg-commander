@@ -236,7 +236,7 @@ export default {
         const { format, io } = this.form;
         const ext = path.extname(io.output);
         if (ext) {
-          this.form.io.output = `${io.output.replace(ext, `.${format.container}`)}`;
+          // this.form.io.output = `${io.output.replace(ext, `.${format.container}`)}`;
         }
       }
     },
